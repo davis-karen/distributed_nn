@@ -8,7 +8,7 @@ def train(model: Module, epochs: int, data_loader, optimiser, loss_function):
         for batch_id, (X, y) in enumerate(data_loader):
             optimiser.zero_grad()# clear previous gradients
             output = model(X)
-            loss = loss_function(output, y) # why are we creating a new loss object each time??
+            loss = loss_function(output, y)
             loss.backward() # computes gradients of all variables with regard to the loss function
             optimiser.step() # applys the gradients to the weights
             if epoch % 10 == 0:

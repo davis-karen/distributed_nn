@@ -4,6 +4,7 @@ import torch
 from torch.nn import Linear
 from torch.nn.functional import leaky_relu
 
+
 class DistributedMLP(torch.nn.Module):
 
     def __init__(self, in_num: int, hidden_layers: Tuple[int, int], out_num: int):

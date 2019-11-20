@@ -8,7 +8,7 @@ Read the paper - Argggh maths :)
 #### My understanding of what to  implement
 
 From what I can see it seems like the only difference between Hogwild! (asynchronous sgd) and normal sgd is that we have a shared model. Each process uses this shared model and then trains as usual.
-#####Steps
+##### Steps
 - Put the model in shared memory 
 - Spin up separate processes 
 - Each process creates a randomised batch sampling from the dataset
