@@ -36,12 +36,20 @@ How does it work for very large models? Do we ever reach a point where we see pa
 ###### Question 4
 All of the above are assuming multi cpus/gpus on the same machine. How to introduce distribution across machines? Is there something hidden in the torch.multiprocessing module or will I have to write some custom code?
 
+###### https://pytorch.org/docs/stable/distributed.html Seems like there a pytorch module called distributed that can help with this
+
 #### Pytorch implementation details
 
-Pytorch default initialization stuff:
+###### Pytorch default initialization stuff:
 
 - Pytorch.nn.Linear defaults to kaiming uniform for weights initialization and expects leaky relu activation function
 - The Loss object is instantiated with θ (parameters) from the model
 - We call loss.backward to calculate the gradients
 - The Optimiser object is instantiated with θ (parameters) from the model
 - We call optimiser.step to apply the gradients to the weights and take a step forward
+
+###### Pytorch multiprocessing stuff
+ - Host to GPU copies are much faster when they originate from pinned (page-locked) memory. CPU tensors and storages expose a pin_memory() method, that returns a copy of the object, with data put in a pinned region.
+ - Once you pin a tensor or storage, you can use asynchronous GPU copies. Just pass an additional non_blocking=True argument to a to() or a cuda() call. This can be used to overlap data transfers with computation.
+ - You can make the DataLoader return batches placed in pinned memory by passing pin_memory=True to its constructor.
+ - to() member function. It's job is to put the tensor on which it's called to a certain device whether it be the CPU or a certain GPU.

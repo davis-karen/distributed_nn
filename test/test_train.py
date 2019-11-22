@@ -22,15 +22,14 @@ class TestTrain:
 
     y_test_1 = torch.from_numpy(np.asarray([[1], [1], [1], [1], [1], [1]], np.float32))
 
-    y = torch.from_numpy(np.asarray([[0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0]], np.float32)).squeeze(
-        1)
+    y = torch.from_numpy(np.asarray([[0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0]], np.float32))\
+        .squeeze(1)
 
-    y_1 = torch.from_numpy(np.asarray([[1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1]], np.float32)).squeeze \
-            (1)
+    y_1 = torch.from_numpy(np.asarray([[1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1]], np.float32))\
+        .squeeze(1)
 
     def test_train_model_to_predict_0(self):
         mlp = DistributedMLP(2, (3, 3), 1)
-        # What type is parameters - Tensor? to represent θ
 
         dataset = TensorDataset(self.X, self.y)  # create your datset
         batch_size = 3
@@ -48,7 +47,6 @@ class TestTrain:
 
     def test_train_model_to_predict_1(self):
         mlp = DistributedMLP(2, (3, 3), 1)
-        # What type is parameters - Tensor? to represent θ
 
         dataset = TensorDataset(self.X, self.y_1)  # create your datset
         batch_size = 3
