@@ -1,0 +1,8 @@
+- Add time to log messages
+- use logging package instead of print ln
+- refactor code so distributed code sits outside of main script
+- parameterise main script
+- unit test distributed code
+- create table for experiment results in markdown
+- terraform script to spin up infrastructure
+- add validation set
