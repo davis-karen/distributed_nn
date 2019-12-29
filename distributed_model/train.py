@@ -42,11 +42,13 @@ def test(model: Module, data_loader, loss_function, device, resize=False):
     test_loss = 0
     accuracy = 0
     with torch.no_grad(): # don't calculate gradients
-        for X, y in data_loader:
+        for x, y in data_loader:
+            x = x.to(device)
+            y = y.to(device)
             if resize:
                 # TODO better way to handle this resize
-                X = X.view(-1, 28 * 28)
-            output = model(X).to(device)
+                x = x.view(-1, 28 * 28)
+            output = model(x).to(device)
             test_loss += loss_function(output, y).item()
             pred = output.max(1)[1]
             accuracy += pred.eq(y).sum().item()
