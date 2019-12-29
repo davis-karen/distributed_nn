@@ -17,12 +17,14 @@ def train(model: Module, epochs: int, data_loader, optimiser, loss_function, dev
     model.train() # letting pytorch know this is a training pass
     for epoch in range(1, epochs + 1):
         epoch_start = timer()
-        for batch_id, (X, y) in enumerate(data_loader):
+        for batch_id, (x, y) in enumerate(data_loader):
+            x = x.to(device)
+            y = y.to(device)
             optimiser.zero_grad()# clear previous gradients
             if resize:
                 # TODO better way to handle this resize
-                X = X.view(-1, 28 * 28)
-            output = model(X).to(device)
+                x = x.view(-1, 28 * 28)
+            output = model(x).to(device)
             loss = loss_function(output, y)
             loss.backward() # computes gradients of all variables with regard to the loss function
             optimiser.step() # applies the gradients to the weights
