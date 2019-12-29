@@ -19,10 +19,10 @@ def distribute_training(model, no_of_processes, no_of_epochs, data_loader, test_
 
     processes = []
     for i in range(no_of_processes):
-        p = mp.Process(target=train, args=(model, no_of_epochs, data_loader, optimizer, loss_function, True))
+        p = mp.Process(target=train, args=(model, no_of_epochs, data_loader, optimizer, loss_function, device, True))
         p.start()
         processes.append(p)
 
     for p in processes: p.join()
 
-    test(model, test_data_loader, loss_function, resize=True)
+    test(model, test_data_loader, loss_function, device, resize=True)

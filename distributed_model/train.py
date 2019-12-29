@@ -9,7 +9,7 @@ import sys
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
-def train(model: Module, epochs: int, data_loader, optimiser, loss_function, resize=False):
+def train(model: Module, epochs: int, data_loader, optimiser, loss_function, device, resize=False):
     start = timer()
 
     logging.info('Starting to train')
@@ -22,7 +22,7 @@ def train(model: Module, epochs: int, data_loader, optimiser, loss_function, res
             if resize:
                 # TODO better way to handle this resize
                 X = X.view(-1, 28 * 28)
-            output = model(X)
+            output = model(X).to(device)
             loss = loss_function(output, y)
             loss.backward() # computes gradients of all variables with regard to the loss function
             optimiser.step() # applies the gradients to the weights
@@ -35,7 +35,7 @@ def train(model: Module, epochs: int, data_loader, optimiser, loss_function, res
     logging.info(f'Process : {process_id}  Training took {end - start} seconds')
 
 
-def test(model: Module, data_loader, loss_function, resize=False):
+def test(model: Module, data_loader, loss_function, device, resize=False):
     model.eval() #letting pytorch know this is evaluation phase
     test_loss = 0
     accuracy = 0
@@ -44,7 +44,7 @@ def test(model: Module, data_loader, loss_function, resize=False):
             if resize:
                 # TODO better way to handle this resize
                 X = X.view(-1, 28 * 28)
-            output = model(X)
+            output = model(X).to(device)
             test_loss += loss_function(output, y).item()
             pred = output.max(1)[1]
             accuracy += pred.eq(y).sum().item()
