@@ -9,6 +9,7 @@ from processing import distribute_training
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
+
 class Run(object):
 
     def go(self, batch_size:int=5, no_of_processes:int=1, epochs:int=5):

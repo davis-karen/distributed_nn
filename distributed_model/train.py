@@ -1,4 +1,5 @@
 import os
+from timeit import default_timer as timer
 
 import torch
 from torch.nn import Module
@@ -9,10 +10,13 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 def train(model: Module, epochs: int, data_loader, optimiser, loss_function, resize=False):
+    start = timer()
+
     logging.info('Starting to train')
     process_id = os.getpid()
     model.train() # letting pytorch know this is a training pass
     for epoch in range(1, epochs + 1):
+        epoch_start = timer()
         for batch_id, (X, y) in enumerate(data_loader):
             optimiser.zero_grad()# clear previous gradients
             if resize:
@@ -24,6 +28,11 @@ def train(model: Module, epochs: int, data_loader, optimiser, loss_function, res
             optimiser.step() # applies the gradients to the weights
             if batch_id % 100 == 0:
                 logging.info(f'Process : {process_id} | Epoch {epoch} Batch : {batch_id} Loss: {loss.item()}')
+        epoch_end = timer()
+        logging.info(f'Process : {process_id} Epoch {epoch} : Training took {epoch_end - epoch_start} seconds')
+
+    end = timer()
+    logging.info(f'Process : {process_id}  Training took {end - start} seconds')
 
 
 def test(model: Module, data_loader, loss_function, resize=False):
